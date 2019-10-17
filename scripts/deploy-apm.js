@@ -29,7 +29,7 @@ module.exports = async (
   const log = (...args) => {
     if (verbose) { console.log(...args) }
   }
-
+  console.log(owner, ensAddress, '======')
   const APMRegistry = artifacts.require('APMRegistry')
   const Repo = artifacts.require('Repo')
   const ENSSubdomainRegistrar = artifacts.require('ENSSubdomainRegistrar')

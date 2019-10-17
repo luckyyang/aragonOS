@@ -7,7 +7,8 @@ const HDWalletProviderPrivkey = require('truffle-hdwallet-provider-privkey')
 const DEFAULT_MNEMONIC = 'stumble story behind hurt patient ball whisper art swift tongue ice alien'
 
 const defaultRPC = (network) =>
-  `https://${network}.infura.io`
+  `https://rpc.elaeth.io:443`
+  // `https://${network}.infura.io`
 
 const configFilePath = (filename) =>
   path.join(homedir(), `.aragon/${filename}`)
@@ -54,6 +55,11 @@ const mochaGasSettings = {
 const mocha = process.env.GAS_REPORTER ? mochaGasSettings : {}
 
 module.exports = {
+  compilers: {
+    solc: {
+      version: "0.4.24"
+    }
+  },
   networks: {
     rpc: {
       network_id: 15,
