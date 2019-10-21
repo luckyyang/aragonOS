@@ -29,7 +29,13 @@ module.exports = async (
   const ENSFactory = artifacts.require('ENSFactory')
 
   log('Deploying ENSFactory...')
-  const factory = await ENSFactory.new()
+  let factory
+  try {
+    factory = await ENSFactory.new()
+  } catch (error) {
+    console.log('error is: ', error)
+  }
+  log(' factory is: ', factory)
   await logDeploy(factory, { verbose })
   const receipt = await factory.newENS(owner)
 

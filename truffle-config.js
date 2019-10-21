@@ -7,8 +7,9 @@ const HDWalletProviderPrivkey = require('truffle-hdwallet-provider-privkey')
 const DEFAULT_MNEMONIC = 'stumble story behind hurt patient ball whisper art swift tongue ice alien'
 
 const defaultRPC = (network) =>
-  `https://rpc.elaeth.io:443`
-  // `https://${network}.infura.io`
+`https://${network}.infura.io/v3/7851ca7a578b4e08a349409689b246af`
+
+const elaethRPC = 'https://rpc.elaeth.io:443'
 
 const configFilePath = (filename) =>
   path.join(homedir(), `.aragon/${filename}`)
@@ -33,9 +34,12 @@ const settingsForNetwork = (network) => {
 const providerForNetwork = (network) => (
   () => {
     let { rpc, keys } = settingsForNetwork(network)
-
-    rpc = rpc || defaultRPC(network)
-
+    if (network === 'elaeth') {
+      rpc = elaethRPC
+    } else {
+      rpc = rpc || defaultRPC(network)
+    }
+    console.log('rpc is: ', rpc)
     if (!keys || keys.length == 0) {
       return new HDWalletProvider(mnemonic(), rpc)
     }
@@ -91,6 +95,12 @@ module.exports = {
       provider: providerForNetwork('rinkeby'),
       gas: 6.9e6,
       gasPrice: 15000000001
+    },
+    elaeth: {
+      network_id: 3,
+      provider: providerForNetwork('elaeth'),
+      gas: 8e6,
+      gasPrice: 1e9
     },
     kovan: {
       network_id: 42,
