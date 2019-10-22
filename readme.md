@@ -29,6 +29,11 @@ npm run lint
 OWNER=[APM owner address] ENS=[ENS registry address] npx truffle exec --network [network] scripts/deploy-apm.js
 ```
 
+Manually deploy:
+```sh
+OWNER=[APM_owner_address] ENS=[ENS_registry_address] npx truffle exec --network [network_name] scripts-manual/deploy-apm.js
+```
+
 - `ENS`: If no ENS registry address is provided, it will deploy a dummy ENS instance to the network. If the ENS registry is provided, the name `aragonpm.eth` must be owned by the deployer account.
 - `OWNER`: The account that will be the initial owner of the APM registry
 

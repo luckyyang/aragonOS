@@ -73,11 +73,19 @@ module.exports = async (
   log('=========')
   log('Deploying APM bases...')
 
-  const apmRegistryBase = await APMRegistry.new()
+  // these are ropsten addresses
+  const APMRegistryDeployedAddress = 0x0D4920D5922751AC003216aA40473BE9ACc15312
+  const RepoDeployedAddress = 0xD4D2D70f65E63290eC22Fd86E1B9DBAEb7cb4Abe
+  const ENSSubdomainRegistrarDeployedAddress = 0xe3D97fA641C9E7164FEE2b146cCF995CFBA50a3C
+
+  const ENSDeployedAddress = 0xfd013e43e120a5c9189f50407183454fca764dee
+  const APMRegistryFactoryDeployedAddress = 0xaD0cc784804e60C160A727f305bE5D5464B8a515
+
+  const apmRegistryBase = await APMRegistry.at(APMRegistryDeployedAddress)
   await logDeploy(apmRegistryBase, { verbose })
-  const apmRepoBase = await Repo.new()
+  const apmRepoBase = await Repo.at(RepoDeployedAddress)
   await logDeploy(apmRepoBase, { verbose })
-  const ensSubdomainRegistrarBase = await ENSSubdomainRegistrar.new()
+  const ensSubdomainRegistrarBase = await ENSSubdomainRegistrar.at(ENSSubdomainRegistrarDeployedAddress)
   await logDeploy(ensSubdomainRegistrarBase, { verbose })
 
   let daoFactory
@@ -92,14 +100,15 @@ module.exports = async (
   }
 
   log('Deploying APMRegistryFactory...')
-  const apmFactory = await APMRegistryFactory.new(
-    daoFactory.address,
-    apmRegistryBase.address,
-    apmRepoBase.address,
-    ensSubdomainRegistrarBase.address,
-    ensAddress,
-    '0x00'
-  )
+  // const apmFactory = await APMRegistryFactory.new(
+  //   daoFactory.address,
+  //   apmRegistryBase.address,
+  //   apmRepoBase.address,
+  //   ensSubdomainRegistrarBase.address,
+  //   ensAddress,
+  //   '0x00'
+  // )
+  const apmFactory = await APMRegistryFactory.at(APMRegistryFactoryDeployedAddress)
   await logDeploy(apmFactory, { verbose })
 
   log(`Assigning ENS name (${labelName}.${tldName}) to factory...`)
