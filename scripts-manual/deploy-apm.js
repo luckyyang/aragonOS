@@ -42,7 +42,7 @@ module.exports = async (
   const labelName = 'aragonpm'
   const tldHash = namehash(tldName)
   const labelHash = '0x'+keccak256(labelName)
-  const apmNode = namehash(`${labelName}.${tldName}`)
+  const apmNode = namehash(`${labelName}.${tldName}`) // 0x9065c3e7f7b7ef1ef4e53d2d0b8e0cef02874ab020c1ece79d5f0d3d0111c0ba
 
   log('-==apmNode: ', apmNode)
 
@@ -82,7 +82,7 @@ module.exports = async (
   const RepoDeployedAddress = '0xD4D2D70f65E63290eC22Fd86E1B9DBAEb7cb4Abe'
   const ENSSubdomainRegistrarDeployedAddress = '0xe3D97fA641C9E7164FEE2b146cCF995CFBA50a3C'
 
-  const ENSDeployedAddress = '0xfd013e43e120a5c9189f50407183454fca764dee'
+  // const ENSDeployedAddress = '0xd5b453fb92a23532a1d4aef5719260d10adcc675'
   const APMRegistryFactoryDeployedAddress = '0xaD0cc784804e60C160A727f305bE5D5464B8a515'
 
   let apmRegistryBase
@@ -131,21 +131,29 @@ module.exports = async (
   } else {
     log('Creating subdomain and assigning it to APMRegistryFactory')
     try {
-      await ens.setSubnodeOwner(tldHash, labelHash, apmFactory.address)
+      log('setSubnodeOwner, params: ', tldHash, labelHash, apmFactory.address) // 0x93cdeb708b7545dc668eb9280176169d1c33cfd8ed6f04690a0bcc88a93fc4ae 0x1542111b4698ac085139692eae7c6efb632a4ae2779f8686da94511ebbbff594 0xaD0cc784804e60C160A727f305bE5D5464B8a515
+
+      // await ens.setSubnodeOwner(tldHash, labelHash, apmFactory.address)
     } catch (err) {
       console.error(
         `Error: could not set the owner of '${labelName}.${tldName}' on the given ENS instance`,
         `(${ensAddress}). Make sure you have ownership rights over the subdomain.`
       )
-      throw err
+      // throw err
     }
   }
 
-  log('Deploying APM...')
-  const receipt = await apmFactory.newAPM(tldHash, labelHash, owner)
+  log('Deploying APM...', owner)
+  let receipt
+  try {
+    receipt = await apmFactory.newAPM(tldHash, labelHash, owner)
+  } catch (error) {
+    console.log('Got receipt error: ', error)
+  }
 
   log('=========')
-  const apmAddr = receipt.logs.filter(l => l.event == 'DeployAPM')[0].args.apm
+  const apmAddr = '0xd85479e32bdeb0a1c83c4b217c4f031fcf89559f'
+  // const apmAddr = receipt.logs.filter(l => l.event == 'DeployAPM')[0].args.apm
   log('# APM:')
   log('Address:', apmAddr)
   log('Transaction hash:', receipt.tx)
