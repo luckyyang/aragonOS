@@ -44,6 +44,8 @@ module.exports = async (
   const labelHash = '0x'+keccak256(labelName)
   const apmNode = namehash(`${labelName}.${tldName}`)
 
+  log('-==apmNode: ', apmNode)
+
   let ens
 
   log('Deploying APM...')
@@ -63,8 +65,10 @@ module.exports = async (
   } else {
     log('find ens address')
     ens = ENS.at(ensAddress)
-    log('Found ens: ', ens)
+    log('Found ens: ', ens.address)
   }
+  const ensOwner = await ens.owner(apmNode)
+  log(`***********************`, ensOwner, ensOwner === '0x0000000000000000000000000000000000000000')
 
   log('ENS:', ensAddress)
   log(`TLD: ${tldName} (${tldHash})`)
@@ -86,7 +90,7 @@ module.exports = async (
   let ensSubdomainRegistrarBase
   try {
     apmRegistryBase = await APMRegistry.at(APMRegistryDeployedAddress)
-    console.log('apmRegistryBase is: ', apmRegistryBase)
+    console.log('apmRegistryBase address is: ', apmRegistryBase.address)
     await logDeploy(apmRegistryBase, { verbose })
     apmRepoBase = await Repo.at(RepoDeployedAddress)
     await logDeploy(apmRepoBase, { verbose })
@@ -119,7 +123,7 @@ module.exports = async (
   const apmFactory = await APMRegistryFactory.at(APMRegistryFactoryDeployedAddress)
   await logDeploy(apmFactory, { verbose })
 
-  log(`Assigning ENS name (${labelName}.${tldName}) to factory...`)
+  log(`Assigning ENS name (${labelName}.${tldName}) to factory...`, apmNode, accounts[0])
 
   if (await ens.owner(apmNode) === accounts[0]) {
     log('Transferring name ownership from deployer to APMRegistryFactory')

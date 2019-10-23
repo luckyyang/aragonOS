@@ -30,16 +30,26 @@ module.exports = async (
 
   const ENSFactoryDeployedAddress = '0x0BD2409cCa2E8A1329aBCa5782652dFa3573a342'
 
-
   log('Deploying ENSFactory...')
-  let factory = await ENSFactory.at(ENSFactoryDeployedAddress)
-  log(' factory is: ', factory)
+  let factory
+  try {
+    factory = await ENSFactory.at(ENSFactoryDeployedAddress)
+  } catch (error) {
+    console.log('Got factory error: ', error)
+  }
+
+  log('Got factory, factory address is: ', factory.address)
   await logDeploy(factory, { verbose })
-  const receipt = await factory.newENS(owner)
+  let receipt
+  try {
+    receipt = await factory.newENS(owner)
+  } catch (error) {
+    console.log('newENS error: ', error)
+  }
 
   const ensAddr = receipt.logs.filter(l => l.event == 'DeployENS')[0].args.ens
   log('====================')
-  log('Deployed ENS:', ensAddr)
+  log('Deployed ENS:', ensAddr, ', owner: ', owner)
 
   log(ensAddr)
 
