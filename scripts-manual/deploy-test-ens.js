@@ -28,7 +28,7 @@ module.exports = async (
   const ENS = artifacts.require('ENS')
   const ENSFactory = artifacts.require('ENSFactory')
 
-  const ENSFactoryDeployedAddress = 0x0BD2409cCa2E8A1329aBCa5782652dFa3573a342
+  const ENSFactoryDeployedAddress = '0x0BD2409cCa2E8A1329aBCa5782652dFa3573a342'
 
 
   log('Deploying ENSFactory...')

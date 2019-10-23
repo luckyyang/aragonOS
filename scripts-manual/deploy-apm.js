@@ -74,19 +74,27 @@ module.exports = async (
   log('Deploying APM bases...')
 
   // these are ropsten addresses
-  const APMRegistryDeployedAddress = 0x0D4920D5922751AC003216aA40473BE9ACc15312
-  const RepoDeployedAddress = 0xD4D2D70f65E63290eC22Fd86E1B9DBAEb7cb4Abe
-  const ENSSubdomainRegistrarDeployedAddress = 0xe3D97fA641C9E7164FEE2b146cCF995CFBA50a3C
+  const APMRegistryDeployedAddress = '0x0D4920D5922751AC003216aA40473BE9ACc15312'
+  const RepoDeployedAddress = '0xD4D2D70f65E63290eC22Fd86E1B9DBAEb7cb4Abe'
+  const ENSSubdomainRegistrarDeployedAddress = '0xe3D97fA641C9E7164FEE2b146cCF995CFBA50a3C'
 
-  const ENSDeployedAddress = 0xfd013e43e120a5c9189f50407183454fca764dee
-  const APMRegistryFactoryDeployedAddress = 0xaD0cc784804e60C160A727f305bE5D5464B8a515
+  const ENSDeployedAddress = '0xfd013e43e120a5c9189f50407183454fca764dee'
+  const APMRegistryFactoryDeployedAddress = '0xaD0cc784804e60C160A727f305bE5D5464B8a515'
 
-  const apmRegistryBase = await APMRegistry.at(APMRegistryDeployedAddress)
-  await logDeploy(apmRegistryBase, { verbose })
-  const apmRepoBase = await Repo.at(RepoDeployedAddress)
-  await logDeploy(apmRepoBase, { verbose })
-  const ensSubdomainRegistrarBase = await ENSSubdomainRegistrar.at(ENSSubdomainRegistrarDeployedAddress)
-  await logDeploy(ensSubdomainRegistrarBase, { verbose })
+  let apmRegistryBase
+  let apmRepoBase
+  let ensSubdomainRegistrarBase
+  try {
+    apmRegistryBase = await APMRegistry.at(APMRegistryDeployedAddress)
+    console.log('apmRegistryBase is: ', apmRegistryBase)
+    await logDeploy(apmRegistryBase, { verbose })
+    apmRepoBase = await Repo.at(RepoDeployedAddress)
+    await logDeploy(apmRepoBase, { verbose })
+    ensSubdomainRegistrarBase = await ENSSubdomainRegistrar.at(ENSSubdomainRegistrarDeployedAddress)
+    await logDeploy(ensSubdomainRegistrarBase, { verbose })
+  } catch (error) {
+    console.log('get instance error: ', error)
+  }
 
   let daoFactory
   if (daoFactoryAddress) {

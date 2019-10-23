@@ -24,12 +24,12 @@ module.exports = async (
   const ACL = artifacts.require('ACL')
   const Kernel = artifacts.require('Kernel')
 
-  const KernelDeployedAddress = 0xcc134b868679826efb850393B55b49DAAef2bc33
-  const ACLDeployedAddress = 0xB161ba006EabbD6DfD5001D00AD61f058739708F
-  const EVMScriptRegistryFactoryDeployedAddress = 0xF78a2f55284d74EB32a5E756BB70416995567396
+  const KernelDeployedAddress = '0xcc134b868679826efb850393B55b49DAAef2bc33'
+  const ACLDeployedAddress = '0xB161ba006EabbD6DfD5001D00AD61f058739708F'
+  const EVMScriptRegistryFactoryDeployedAddress = '0xF78a2f55284d74EB32a5E756BB70416995567396'
 
   // ==> NOTE <===: use above 3 params to deploy DAOFactory
-  const DAOFactoryDeployedAddress = 0x839cB66c2C15207460D7E5466e866374588EDa9d
+  const DAOFactoryDeployedAddress = '0x839cB66c2C15207460D7E5466e866374588EDa9d'
 
   const DAOFactory = artifacts.require('DAOFactory')
 
